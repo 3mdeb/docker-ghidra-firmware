@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
+    echo "$(basename $0) -h|--help  --  show this message"
+    echo "$(basename $0) shell      --  enter root shell of the container"
+    echo "$(basename $0) [args]     --  run Ghidra with specified arguments"
+    exit
+fi
+
+CONFIG_DIR="$HOME/.config/ghidra-firmware"
+mkdir -p "$CONFIG_DIR"
+
+xhost +local:root
+docker run -it \
+           -e DISPLAY="$DISPLAY" \
+           -e USER_ID="$(id -u)" \
+           -e GROUP_ID="$(id -g)" \
+           -v /tmp/.X11-unix:/tmp/.X11-unix \
+           -v "$CONFIG_DIR:/user/.ghidra" \
+           -v "$PWD:/user/host-data" \
+           ghidra-firmware:latest "$@"
+xhost -local:root
