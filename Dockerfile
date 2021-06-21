@@ -7,8 +7,9 @@ ENV GHIDRA_INSTALL_DIR /ghidra
 RUN    apt-get update \
     && apt-get install -y --no-install-recommends \
                        fontconfig libxrender1 libxtst6 libxi6 wget unzip \
-                       python-requests build-essential git \
-    && echo "===> Obtaining Ghidra..." \
+                       python-requests build-essential git
+
+RUN echo "===> Obtaining Ghidra..." \
     && wget --progress=bar:force \
             -O /tmp/ghidra.zip \
             https://ghidra-sre.org/ghidra_9.2.2_PUBLIC_20201229.zip \
