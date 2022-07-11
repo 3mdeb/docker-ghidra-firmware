@@ -2,13 +2,14 @@ FROM openjdk@sha256:0c1702c4b90c6148a9856d3154963b7499eb9efca1687ad544340f1542c8
 
 ENV VERSION 9.2.2_PUBLIC
 ENV GHIDRA_SHA 8cf8806dd5b8b7c7826f04fad8b86fc7e07ea380eae497f3035f8c974de72cf8
-ENV FIRMWARE_COMMIT bccdc829bab1de8563ccbebe00056f9d57df2b9c
+ENV FIRMWARE_COMMIT 20210419.0
 ENV GHIDRA_INSTALL_DIR /ghidra
 RUN    apt-get update \
     && apt-get install -y --no-install-recommends \
                        fontconfig libxrender1 libxtst6 libxi6 wget unzip \
-                       python-requests build-essential git \
-    && echo "===> Obtaining Ghidra..." \
+                       python-requests build-essential git
+
+RUN echo "===> Obtaining Ghidra..." \
     && wget --progress=bar:force \
             -O /tmp/ghidra.zip \
             https://ghidra-sre.org/ghidra_9.2.2_PUBLIC_20201229.zip \
