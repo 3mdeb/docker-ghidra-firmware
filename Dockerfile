@@ -1,18 +1,18 @@
-FROM openjdk@sha256:0c1702c4b90c6148a9856d3154963b7499eb9efca1687ad544340f1542c85b9f
+FROM openjdk:19-jdk-bullseye
 
-ENV VERSION 9.2.2_PUBLIC
-ENV GHIDRA_SHA 8cf8806dd5b8b7c7826f04fad8b86fc7e07ea380eae497f3035f8c974de72cf8
-ENV FIRMWARE_COMMIT 20210419.0
+ENV VERSION 10.4_PUBLIC
+ENV GHIDRA_SHA 6911d674798f145f8ea723fdd3eb67a8fae8c7be92e117bca081e6ef66acac19
+ENV FIRMWARE_COMMIT 20231016.0
 ENV GHIDRA_INSTALL_DIR /ghidra
 RUN    apt-get update \
     && apt-get install -y --no-install-recommends \
                        fontconfig libxrender1 libxtst6 libxi6 wget unzip \
-                       python-requests build-essential git
+                       python3-requests build-essential git
 
 RUN echo "===> Obtaining Ghidra..." \
     && wget --progress=bar:force \
             -O /tmp/ghidra.zip \
-            https://ghidra-sre.org/ghidra_9.2.2_PUBLIC_20201229.zip \
+            https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.4_build/ghidra_10.4_PUBLIC_20230928.zip \
     && echo "$GHIDRA_SHA /tmp/ghidra.zip" | sha256sum -c - \
     && unzip /tmp/ghidra.zip \
     && mv "ghidra_${VERSION}" "$GHIDRA_INSTALL_DIR" \
@@ -27,13 +27,13 @@ RUN echo "===> Obtaining Ghidra..." \
     \
     && echo "===> Pre-configuring Ghidra..." \
     && mkdir /preconfig/ \
-    && mv dist/ghidra_9.2.2_PUBLIC_*_ghidra-firmware-utils.zip \
+    && mv dist/ghidra_${VERSION}_*_ghidra-firmware-utils.zip \
           /preconfig/ \
     && cd /preconfig/ \
     && unzip *.zip \
     && rm *.zip \
-    && mkdir -p .ghidra/.ghidra_9.2.2_PUBLIC/Extensions \
-    && mv ghidra-firmware-utils .ghidra/.ghidra_9.2.2_PUBLIC/Extensions \
+    && mkdir -p .ghidra/.ghidra_${VERSION}/Extensions \
+    && mv ghidra-firmware-utils .ghidra/.ghidra_${VERSION}/Extensions \
     \
     && echo "===> Cleaning up unnecessary files..." \
     && apt-get purge -y --auto-remove wget unzip git \

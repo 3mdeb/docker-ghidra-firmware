@@ -21,6 +21,6 @@ fi
 
 RUN_SCRIPT=/ghidra/support/launch.sh
 MAXMEM=${MAXMEM:-1G}
-RUN_COMMAND=$(printf "%q " "$RUN_SCRIPT" fg Ghidra $MAXMEM "" ghidra.GhidraRun "$@")
+RUN_COMMAND=$(printf "%q " "$RUN_SCRIPT" fg jdk Ghidra $MAXMEM "" ghidra.GhidraRun "$@")
 
 exec su -c "$RUN_COMMAND" user
